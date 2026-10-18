@@ -27,11 +27,12 @@ public class PrestamoService {
     private final LibroClient libroClient;
     private final PrestamoEventPublisher publisher;
 
-    public Prestamo crearPrestamo(Long libroId, String usuario) {
+    public Prestamo crearPrestamo(
+        Long libroId, String usuario, String authorization) {
         //1. SINCRONO: busdca libro disponible en ms-catalogo
         LibroDTO libro;
         try {
-            libro = libroClient.consultarLibro(libroId);
+            libro = libroClient.consultarLibro(libroId, authorization);
         } catch (HttpClientErrorException.NotFound e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El libro no existe");
         }

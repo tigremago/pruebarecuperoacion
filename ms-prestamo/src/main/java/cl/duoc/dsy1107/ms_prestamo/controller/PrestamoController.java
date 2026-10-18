@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.RequestHeader;
 import cl.duoc.dsy1107.ms_prestamo.model.Prestamo;
 import cl.duoc.dsy1107.ms_prestamo.service.PrestamoService;
 import lombok.RequiredArgsConstructor;
@@ -20,11 +20,16 @@ public class PrestamoController {
     private final PrestamoService prestamoService;
 
     public record CrearPrestamoRequest(Long libroId, String usuario) {}
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Prestamo crear(@RequestBody CrearPrestamoRequest request) {
-        return prestamoService.crearPrestamo(request.libroId(), request.usuario());
+    public Prestamo crear(
+            @RequestHeader("Authorization") String authorization,
+            @RequestBody CrearPrestamoRequest request) {
+
+        return prestamoService.crearPrestamo(
+                request.libroId(),
+                request.usuario(),
+                authorization);
     }
 
     @PostMapping("/{id}/devolucion")

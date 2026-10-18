@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
-@Component 
+@Component
 public class LibroClient {
 
     private final RestClient restClient;
@@ -13,11 +13,12 @@ public class LibroClient {
         this.restClient = RestClient.create(baseUrl);
     }
 
-    public LibroDTO consultarLibro(Long libroId) {
+    public LibroDTO consultarLibro(Long libroId, String authorization) {
         return restClient.get()
-                .uri("/public/libros/{id}", libroId)
+                .uri("/api/libros/{id}", libroId)
+                .header("Authorization", authorization)
                 .retrieve()
                 .body(LibroDTO.class);
     }
-
 }
+
